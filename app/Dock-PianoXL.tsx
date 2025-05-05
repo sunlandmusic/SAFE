@@ -13,7 +13,7 @@ const BASS_SEQUENCE: BassOffset[] = ['BASS', '+1', '+2', '+3', '+4', '+5', '-6',
 
 const SOUNDS: InstrumentType[] = ['balafon', 'piano', 'rhodes', 'steel_drum', 'pluck', 'pad'];
 
-export default function DockWControls() {
+export default function DockPianoXL() {
   const [selectedKey, setSelectedKey] = useState<NoteName>('C');
   const [mode, setMode] = useState<MusicMode>('free');
   const [octave, setOctave] = useState<number>(0);
@@ -27,7 +27,6 @@ export default function DockWControls() {
   const [bassOffsetMap, setBassOffsetMap] = useState<Record<string, BassOffset>>({});
   const [isSoundWindowSelected, setIsSoundWindowSelected] = useState(false);
   const [isLoadingSound, setIsLoadingSound] = useState(false);
-  const [scaleNotes, setScaleNotes] = useState<NoteName[]>([]);
 
   const pianoXLRef = useRef<{ adjustLastChordType: (direction: 'up' | 'down') => void }>(null);
 
@@ -187,10 +186,6 @@ export default function DockWControls() {
     }, 1000); // Adjust timing as needed
   };
 
-  const handleScaleNotesChange = (notes: NoteName[]) => {
-    setScaleNotes(notes);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.overlayContainer}>
@@ -201,21 +196,7 @@ export default function DockWControls() {
 
         {/* SLOT2: Piano XL Main Area (Blue) */}
         <View style={[styles.slot2Container, { backgroundColor: 'rgba(0, 0, 255, 0.2)' }]}>
-          <PianoXL
-            ref={pianoXLRef}
-            selectedKey={selectedKey}
-            mode={mode}
-            octave={octave}
-            inversion={inversion}
-            selectedSound={selectedSound}
-            onChordChange={handleChordChange}
-            onScaleNotesChange={handleScaleNotesChange}
-            useFlats={useFlats}
-            selectedBassOffset={selectedBassOffset === 'BASS' ? 0 : 
-              selectedBassOffset === 'OFF' ? null :
-              selectedBassOffset.startsWith('+') ? parseInt(selectedBassOffset.slice(1)) :
-              -parseInt(selectedBassOffset.slice(1))}
-          />
+          <PianoXL ref={pianoXLRef} />
         </View>
 
         {/* SLOT3: Settings Bar (Green) */}
